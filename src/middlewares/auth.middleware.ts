@@ -1,0 +1,36 @@
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import User, { UserDoc } from '../models/user.model';
+
+interface JwtPayload {
+  id: string;
+}
+
+export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) return res.status(401).json({ message: 'No token' });
+
+  try {
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
+    const user = await User.findById(decoded.id).populate('roles');
+
+    if (!user || user.status !== 'active') {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+export const authorize = (...requiredPermissions: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const permissions = req.user.roles.flatMap((r: any) => r.permissions);
+    const hasAll = requiredPermissions.every(p => permissions.includes(p));
+    if (!hasAll) return res.status(403).json({ message: 'Permission denied' });
+    next();
+  };
+};
