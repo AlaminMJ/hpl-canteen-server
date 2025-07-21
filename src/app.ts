@@ -11,5 +11,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/departments', departmentRoute);
 app.use('/api/employees', employeeRoutes);
+app.get("/health",(req,res)=>{
+    res.send("OK");
+})
 
 export default app;
