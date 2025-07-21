@@ -14,5 +14,8 @@ app.use('/api/employees', employeeRoutes);
 app.get("/health",(req,res)=>{
     res.send("OK");
 })
+app.get("/",(req,res)=>{
+    res.send("Canteen");
+})
 
 export default app;
