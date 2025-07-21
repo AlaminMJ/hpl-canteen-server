@@ -3,9 +3,10 @@ import authRoutes from './routes/auth.routes';
 import departmentRoute from './routes/department.routes';
 import employeeRoutes from './routes/employee.routes';
 import dotenv from 'dotenv';
-
+import cors from "cors"
 dotenv.config({ path: '.env' });
 const app = express();
+app.use(cors({origin:"*"}))
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
