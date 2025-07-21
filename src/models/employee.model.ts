@@ -3,6 +3,7 @@ import { Schema, model, Document } from "mongoose";
 export interface EmployeeDoc extends Document {
   name: string;
   rfid: string;
+  id: number;
   emplyee_type: "management" | "non-management";
   department: Schema.Types.ObjectId;
   designation: string;
@@ -13,6 +14,7 @@ const EmployeeSchema = new Schema<EmployeeDoc>(
   {
     name: { type: String, required: true },
     rfid: { type: String, unique: true, required: true },
+    id:{type: Number, unique: true, required: true},
     emplyee_type: {
       type: String,
       enum: ["management", "non-management"],
