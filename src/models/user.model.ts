@@ -5,7 +5,7 @@ export interface UserDoc extends Document {
   name: string;
   email: string;
   password: string;
-  roles: any[];
+  roles: "admin" | "employee" | "officer";
   status: 'active' | 'suspended' | 'terminated';
   comparePassword: (pw: string) => Promise<boolean>;
 }
@@ -14,7 +14,7 @@ const UserSchema = new Schema<UserDoc>({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  roles: [{ type: Schema.Types.ObjectId, ref: 'Role' }],
+  roles:  { type: String, enum: ['admin', 'employee', 'officer'], default: 'admin' },
   status: { type: String, enum: ['active', 'suspended', 'terminated'], default: 'active' },
 }, { timestamps: true });
 

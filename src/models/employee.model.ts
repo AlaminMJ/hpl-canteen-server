@@ -2,8 +2,8 @@ import { Schema, model, Document } from 'mongoose';
 
 export interface EmployeeDoc extends Document {
   name: string;
-  email: string;
-  phone: string;
+  rfid: string;
+  emplyee_type: "management"| "non-management";
   department: Schema.Types.ObjectId;
   designation: string;
   status: 'active' | 'inactive';
@@ -11,8 +11,8 @@ export interface EmployeeDoc extends Document {
 
 const EmployeeSchema = new Schema<EmployeeDoc>({
   name: { type: String, required: true },
-  email: { type: String, unique: true, required: true },
-  phone: { type: String, required: true },
+  rfid: { type: String, unique: true, required: true },
+  emplyee_type: {type: String, enum: ['management', 'non-management'], required: true ,default:"non-management"},
   designation: { type: String, required: true },
   status: { type: String, enum: ['active', 'inactive'], default: 'active' },
   department: { type: Schema.Types.ObjectId, ref: 'Department', required: true },

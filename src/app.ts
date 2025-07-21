@@ -20,3 +20,8 @@ app.get("/",(req,res)=>{
 })
 
 export default app;
+
+
+
+// import mealTypeRoutes from './routes/mealType.routes';
+// app.use('/api/meal-types', mealTypeRoutes);

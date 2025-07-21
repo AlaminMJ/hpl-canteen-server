@@ -13,7 +13,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   try {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-    const user = await User.findById(decoded.id).populate('roles');
+    const user = await User.findById(decoded.id);
 
     if (!user || user.status !== 'active') {
       return res.status(403).json({ message: 'Access denied' });
@@ -26,11 +26,10 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const authorize = (...requiredPermissions: string[]) => {
+export const authorize = ( roles : string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const permissions = req.user.roles.flatMap((r: any) => r.permissions);
-    const hasAll = requiredPermissions.every(p => permissions.includes(p));
-    if (!hasAll) return res.status(403).json({ message: 'Permission denied' });
+    const permissions = roles.some((r: string) => req.user.roles=== r);    
+    if (!permissions) return res.status(403).json({ message: 'Permission denied' });
     next();
   };
 };
