@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-import app from './app';
-import { connectDB, closeDB } from './config/db';
+import dotenv from "dotenv";
+import app from "./app";
+import { connectDB, closeDB } from "./config/db";
 
 dotenv.config();
 
@@ -10,11 +10,13 @@ const startServer = async () => {
   await connectDB();
 
   const server = app.listen(PORT, () => {
-    console.log(`[${new Date().toISOString()}] 🚀 Server running on port ${PORT}`);
+    console.log(
+      `[${new Date().toISOString()}] 🚀 Server running on port ${PORT}`
+    );
   });
- 
+
   const shutdown = async () => {
-    console.log('\n🛑 Gracefully shutting down...');
+    console.log("\n🛑 Gracefully shutting down...");
     await closeDB();
     server.close(() => {
       console.log(`[${new Date().toISOString()}] 🔒 Server closed`);
@@ -22,8 +24,8 @@ const startServer = async () => {
     });
   };
 
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
+  process.on("SIGINT", shutdown);
+  process.on("SIGTERM", shutdown);
 };
 
 startServer();

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export const connectDB = async (): Promise<void> => {
   const uri = process.env.MONGO_URI!;
@@ -14,7 +14,10 @@ export const connectDB = async (): Promise<void> => {
     await mongoose.connect(uri, options as any);
     console.log(`[${new Date().toISOString()}] ✅ MongoDB Connected`);
   } catch (error) {
-    console.error(`[${new Date().toISOString()}] ❌ MongoDB connection error`, error);
+    console.error(
+      `[${new Date().toISOString()}] ❌ MongoDB connection error`,
+      error
+    );
     process.exit(1); // exit app if cannot connect
   }
 };
@@ -24,6 +27,9 @@ export const closeDB = async (): Promise<void> => {
     await mongoose.disconnect();
     console.log(`[${new Date().toISOString()}] 🔌 MongoDB Disconnected`);
   } catch (err) {
-    console.error(`[${new Date().toISOString()}] ❗ Error during DB disconnect`, err);
+    console.error(
+      `[${new Date().toISOString()}] ❗ Error during DB disconnect`,
+      err
+    );
   }
 };

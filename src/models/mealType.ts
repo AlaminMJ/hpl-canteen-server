@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document } from "mongoose";
 
 export interface MealTypeDoc extends Document {
   name: string;
@@ -7,11 +7,14 @@ export interface MealTypeDoc extends Document {
   lastRequisition: string;
 }
 
-const MealTypeSchema = new Schema<MealTypeDoc>({
-  name: { type: String, required: true, unique: true },
-  startTime: { type: String, required: true }, // Format: HH:mm
-  endTime: { type: String, required: true },
-  lastRequisition: { type: String, required: true },
-}, { timestamps: true });
+const MealTypeSchema = new Schema<MealTypeDoc>(
+  {
+    name: { type: String, required: true, unique: true },
+    startTime: { type: String, required: true }, // Format: HH:mm
+    endTime: { type: String, required: true },
+    lastRequisition: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-export default model<MealTypeDoc>('MealType', MealTypeSchema);
+export default model<MealTypeDoc>("MealType", MealTypeSchema);

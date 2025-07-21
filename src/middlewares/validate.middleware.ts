@@ -1,9 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import * as z from "zod"; 
+import { Request, Response, NextFunction } from "express";
+import * as z from "zod";
 
-
-export const validate = (schema: any) =>
-  (req: Request, res: Response, next: NextFunction) => {
+export const validate =
+  (schema: any) => (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
     if (!result.success) {
       return res.status(400).json({ errors: result.error });
