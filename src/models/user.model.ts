@@ -1,43 +1,27 @@
 import { Schema, model, Document } from "mongoose";
-import { hashPassword } from "../utils/bcrypt";
+import bcrypt from "bcryptjs";
 
 export interface UserDoc extends Document {
-  name: string;
   email: string;
   password: string;
-  roles: "admin" | "employee" | "officer";
-  status: "active" | "suspended" | "terminated";
-  comparePassword: (pw: string) => Promise<boolean>;
+  role: "admin" | "officer" | "user";
+  comparePassword(password: string): Promise<boolean>;
 }
 
-const UserSchema = new Schema<UserDoc>(
-  {
-    name: String,
-    email: { type: String, unique: true },
-    password: String,
-    roles: {
-      type: String,
-      enum: ["admin", "employee", "officer"],
-      default: "admin",
-    },
-    status: {
-      type: String,
-      enum: ["active", "suspended", "terminated"],
-      default: "active",
-    },
-  },
-  { timestamps: true }
-);
+const UserSchema = new Schema<UserDoc>({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ["admin", "officer", "user"], default: "user" },
+});
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.password = await hashPassword(this.password);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
-UserSchema.methods.comparePassword = async function (plain: string) {
-  const { comparePassword } = await import("../utils/bcrypt");
-  return comparePassword(plain, this.password);
+UserSchema.methods.comparePassword = function (candidate: string) {
+  return bcrypt.compare(candidate, this.password);
 };
 
 export default model<UserDoc>("User", UserSchema);

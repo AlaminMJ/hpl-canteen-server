@@ -1,34 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import User, { UserDoc } from "../models/user.model";
 
-interface JwtPayload {
-  id: string;
-}
-
-export const authenticate = async (
+export const authenticate = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader)
-  if (!authHeader?.startsWith("Bearer "))
-    return res.status(401).json({ message: "No token" });
+  const token = authHeader?.split(" ")[1];
+
+  if (!token) return res.status(401).json({ message: "Missing access token" });
 
   try {
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-    const user = await User.findById(decoded.id);
-    console.log(user);
-    if (!user || user.status !== "active") {
-      return res.status(403).json({ message: "Access denied" });
-    }
-
-    req.user = user;
+    const payload = jwt.verify(token, process.env.ACCESS_SECRET!);
+    req.user = payload;
     next();
-  } catch (err) {
-    res.status(401).json({ message: "Invalid token" });
+  } catch {
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 

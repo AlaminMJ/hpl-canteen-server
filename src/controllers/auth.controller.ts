@@ -1,33 +1,45 @@
 import { Request, Response } from "express";
-import User, { UserDoc } from "../models/user.model";
-import { comparePassword } from "../utils/bcrypt";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
+import User from "../models/user.model";
+import { signAccessToken, signRefreshToken, verifyToken } from "../utils/jwt";
 
-export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  const exists = await User.findOne({ email });
-  if (exists) return res.status(400).json({ message: "User already exists" });
-
-  const user: UserDoc = await User.create({ name, email, password });
-  const accessToken = generateAccessToken(user._id);
-  const refreshToken = generateRefreshToken(user._id);
-
-  res.status(201).json({ accessToken, refreshToken });
-};
+const tokenBlacklist = new Set<string>();
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email }).populate("roles");
-  if (!user || !(await comparePassword(password, user.password))) {
+  const user = await User.findOne({ email });
+  if (!user || !(await user.comparePassword(password))) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  const accessToken = generateAccessToken(user._id);
-  const refreshToken = generateRefreshToken(user._id);
+  const payload = { id: user._id, email: user.email, role: user.role };
+  const accessToken = signAccessToken(payload);
+  const refreshToken = signRefreshToken(payload);
 
-  res.json({ accessToken, refreshToken });
+  res.json({ accessToken, refreshToken, user: payload });
 };
 
-export const user = async (req: Request, res: Response) => {
-  res.json(req.user);
+export const refresh = (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken || tokenBlacklist.has(refreshToken)) {
+    return res.status(403).json({ message: "Invalid refresh token" });
+  }
+
+  try {
+    const payload = verifyToken(refreshToken, "refresh");
+    const accessToken = signAccessToken(payload as object);
+    res.json({ accessToken });
+  } catch {
+    res.status(403).json({ message: "Invalid refresh token" });
+  }
+};
+
+export const logout = (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+  if (refreshToken) tokenBlacklist.add(refreshToken);
+  res.sendStatus(204);
+};
+
+export const getProtectedData = (req: Request, res: Response) => {
+  res.json({ data: `Hello ${req.user?.email}, you accessed protected data!` });
 };
