@@ -10,7 +10,7 @@ router.use(authenticate);
 
 router.post(
   "/",
-  authorize(["admin"]), // roles allowed to create
+  authorize("admin"), // roles allowed to create
   validate(mealConsumptionCreateSchema),
   createMealConsumption
 );

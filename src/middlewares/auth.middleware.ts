@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { UserDoc } from "../models/user.model";
 
 export const authenticate = (
   req: Request,
@@ -13,16 +14,16 @@ export const authenticate = (
 
   try {
     const payload = jwt.verify(token, process.env.ACCESS_SECRET!);
-    req.user = payload;
+    req.user = payload as UserDoc;
     next();
   } catch {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 
-export const authorize = (roles: string[]) => {
+export const authorize = (roles: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const permissions = roles.some((r: string) => req.user.roles === r);
+    const permissions = roles === "admin";
     if (!permissions)
       return res.status(403).json({ message: "Permission denied" });
     next();

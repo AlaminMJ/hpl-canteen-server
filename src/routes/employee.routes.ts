@@ -18,16 +18,16 @@ router.get("/", getAllEmployees);
 router.get("/:id", getEmployeeById);
 router.post(
   "/",
-  authorize(["admin"]),
+  authorize("admin"),
   validate(createEmployeeSchema),
   createEmployee
 );
 router.put(
   "/:id",
-  authorize(["admin"]),
+  authorize("admin"),
   validate(createEmployeeSchema),
   updateEmployee
 );
-router.delete("/:id", authorize(["admin"]), deleteEmployee); // Only admin can delete
+router.delete("/:id", authorize("admin"), deleteEmployee); // Only admin can delete
 
 export default router;

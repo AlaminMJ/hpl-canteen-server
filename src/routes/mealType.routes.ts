@@ -14,20 +14,15 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get("/", authorize(["admin"]), getAllMealTypes);
-router.get("/:id", authorize(["admin"]), getMealTypeById);
-router.post(
-  "/",
-  authorize(["admin"]),
-  validate(mealTypeSchema),
-  createMealType
-);
+router.get("/", authorize("admin"), getAllMealTypes);
+router.get("/:id", authorize("admin"), getMealTypeById);
+router.post("/", authorize("admin"), validate(mealTypeSchema), createMealType);
 router.put(
   "/:id",
-  authorize(["admin"]),
+  authorize("admin"),
   validate(mealTypeSchema),
   updateMealType
 );
-router.delete("/:id", authorize(["admin"]), deleteMealType); // Only admin can delete
+router.delete("/:id", authorize("admin"), deleteMealType); // Only admin can delete
 
 export default router;

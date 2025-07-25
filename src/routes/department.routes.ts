@@ -16,16 +16,16 @@ router.use(authenticate);
 router.get("/", getAllDepartments);
 router.post(
   "/",
-  authorize(["admin"]),
+  authorize("admin"),
   validate(createDepartmentSchema),
   createDepartment
 );
 router.put(
   "/:id",
-  authorize(["admin"]),
+  authorize("admin"),
   validate(createDepartmentSchema),
   updateDepartment
 );
-router.delete("/:id", authorize(["admin"]), deleteDepartment);
+router.delete("/:id", authorize("admin"), deleteDepartment);
 
 export default router;
