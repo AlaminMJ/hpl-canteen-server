@@ -15,5 +15,8 @@ router.post("/login", validate(loginSchema), login);
 router.post("/refresh", validate(refreshSchema), refresh);
 router.post("/logout", logout);
 router.get("/data/protected", authenticate, getProtectedData);
+router.get("me", authenticate, (req, res) => {
+  res.json(req.user);
+});
 
 export default router;
