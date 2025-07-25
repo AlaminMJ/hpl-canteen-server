@@ -20,7 +20,6 @@ export const login = async (req: Request, res: Response) => {
 
 export const refresh = (req: Request, res: Response) => {
   const { refreshToken } = req.body;
-
   if (!refreshToken || tokenBlacklist.has(refreshToken)) {
     return res.status(403).json({ message: "Invalid refresh token" });
   }
