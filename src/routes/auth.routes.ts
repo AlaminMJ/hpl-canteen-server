@@ -10,7 +10,7 @@ import { validate } from "../middlewares/validate.middleware";
 import { loginSchema, refreshSchema } from "../schemas/auth.schema";
 
 const router = Router();
-router.get("me", authenticate, (req, res) => {
+router.get("/me", authenticate, (req, res) => {
   res.json(req.user);
 });
 router.post("/login", validate(loginSchema), login);
