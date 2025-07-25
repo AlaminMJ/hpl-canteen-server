@@ -1,0 +1,40 @@
+[debug] [2025-07-25T07:11:03.308Z] ----------------------------------------------------------------------
+[debug] [2025-07-25T07:11:03.310Z] Command:       /nix/store/ws50yvm6vzlzf7jzz6n7xh4szddrack1-nodejs-20.19.1/bin/node /nix/store/gv0i9ndcpzjpfi2yr06402kzy90q51ki-firebase-tools-14.10.1/lib/node_modules/firebase-tools/lib/bin/firebase.js init hosting
+[debug] [2025-07-25T07:11:03.311Z] CLI Version:   14.10.1
+[debug] [2025-07-25T07:11:03.311Z] Platform:      linux
+[debug] [2025-07-25T07:11:03.311Z] Node Version:  v20.19.1
+[debug] [2025-07-25T07:11:03.311Z] Time:          Fri Jul 25 2025 07:11:03 GMT+0000 (Coordinated Universal Time)
+[debug] [2025-07-25T07:11:03.312Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-07-25T07:11:03.317Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-07-25T07:11:44.158Z] Running auto auth
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /home/user/canteenserver
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  If you want to create a project in a Google Cloud organization or folder, please use "firebase projects:create" instead, and return to this command when you've created the project. 
+[debug] [2025-07-25T07:12:07.623Z] No OAuth tokens found
+[debug] [2025-07-25T07:12:07.625Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects [none]
+[debug] [2025-07-25T07:12:07.628Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"projectId":"solid-silicon-466515-s7","name":"solid-silicon-466515-s7"}
+[debug] [2025-07-25T07:12:08.491Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects 409
+[debug] [2025-07-25T07:12:08.492Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects {"error":{"code":409,"message":"Requested entity already exists","status":"ALREADY_EXISTS"}}
+[debug] [2025-07-25T07:12:08.517Z] FirebaseError: Request to https://cloudresourcemanager.googleapis.com/v1/projects had HTTP Error: 409, Requested entity already exists
+    at responseToError (/nix/store/gv0i9ndcpzjpfi2yr06402kzy90q51ki-firebase-tools-14.10.1/lib/node_modules/firebase-tools/lib/responseToError.js:52:12)
+    at RetryOperation._fn (/nix/store/gv0i9ndcpzjpfi2yr06402kzy90q51ki-firebase-tools-14.10.1/lib/node_modules/firebase-tools/lib/apiv2.js:312:77)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+[error] 
+[error] Error: Failed to create project because there is already a project with ID solid-silicon-466515-s7. Please try again with a unique project ID.

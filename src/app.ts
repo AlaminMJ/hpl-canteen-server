@@ -17,7 +17,7 @@ app.use("/api/auth", authRoutes);
 // app.use("/api/departments", departmentRoute);
 // app.use("/api/employees", employeeRoutes);
 // app.use("/api/meal-types", mealTypeRoutes);
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ health: "Ok" });
 });
 app.get("/", (req, res) => {
