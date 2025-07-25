@@ -15,7 +15,7 @@ export const login = async (req: Request, res: Response) => {
   const accessToken = signAccessToken(payload);
   const refreshToken = signRefreshToken(payload);
 
-  res.json({ accessToken, refreshToken, user: payload });
+  res.status(200).json({ accessToken, refreshToken, user: payload });
 };
 
 export const refresh = (req: Request, res: Response) => {
